@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff & Teller Management | SmartQueue Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="admin-dashboard.html" class="sidebar-brand">
+                    <div class="brand-icon" style="background:linear-gradient(135deg, #ef4444, #b91c1c);"><i class="fas fa-shield-alt"></i></div>
+                    <span>Admin<span>HQ</span></span>
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-label">System Control</div>
+                <div class="nav-item">
+                    <a href="admin-dashboard.html" class="nav-link">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="admin-customers.html" class="nav-link">
+                        <i class="fas fa-users"></i> Customers
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="admin-staff.html" class="nav-link active">
+                        <i class="fas fa-user-tie"></i> Staff
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="admin-branches.html" class="nav-link">
+                        <i class="fas fa-building"></i> Branches
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="admin-services.html" class="nav-link">
+                        <i class="fas fa-concierge-bell"></i> Services
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="queue-status.html" target="_blank" class="nav-link">
+                        <i class="fas fa-stream"></i> Live Queues
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="user-avatar" style="background:#ef4444;">A</div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-display-name">Super Admin</div>
+                        <div class="user-role" id="user-display-role">System Admin</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button id="sidebar-toggle-btn" class="mobile-menu-btn" style="display:inline-block;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="top-bar-title">
+                        <h1>Staff & Teller Officers</h1>
+                        <p>Assign branch counters, maintain staff credentials, and view presence</p>
+                    </div>
+                </div>
+
+                <div class="top-bar-actions">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="openModal('add-staff-modal')">
+                        <i class="fas fa-plus"></i> Add Staff Officer
+                    </button>
+                </div>
+            </header>
+
+            <main class="content-body">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-user-tie" style="color:var(--accent); margin-right:8px;"></i> Bank Staff Directory</h3>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="loadAdminStaff()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Officer Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Branch Assignment</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-staff-table-body">
+                                <tr>
+                                    <td colspan="7" style="text-align:center; padding:32px; color:var(--text-muted);">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading staff records...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div class="modal-overlay" id="add-staff-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color:var(--primary); font-size:1.25rem;"><i class="fas fa-user-tie" style="color:var(--accent); margin-right:8px;"></i> Add Bank Staff Officer</h3>
+                <button type="button" class="modal-close-btn" onclick="closeModal('add-staff-modal')">&times;</button>
+            </div>
+            <form onsubmit="handleAddStaffSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" id="add-staff-name" class="form-control" style="padding-left:14px;" placeholder="e.g. Officer Ramesh" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Official Work Email *</label>
+                    <input type="email" id="add-staff-email" class="form-control" style="padding-left:14px;" placeholder="staff@smartqueue.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" id="add-staff-phone" class="form-control" style="padding-left:14px;" placeholder="+91 98765 00002" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Branch Assignment</label>
+                    <select class="form-control" style="padding-left:14px;">
+                        <option value="1">Chennai Main Branch</option>
+                        <option value="2">Anna Nagar Branch</option>
+                        <option value="3">Tambaram Branch</option>
+                        <option value="4">Coimbatore Branch</option>
+                    </select>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('add-staff-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Staff Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>requireAuth(['admin']);</script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

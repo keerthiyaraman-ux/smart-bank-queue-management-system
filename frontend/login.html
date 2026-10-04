@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login | SmartQueue Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="index.html" class="auth-logo">
+                    <div class="brand-icon"><i class="fas fa-landmark"></i></div>
+                    <span>SmartQueue Bank</span>
+                </a>
+                <h2>Customer Sign In</h2>
+                <p>Access your digital queue tokens and appointments</p>
+                <span class="auth-role-tag customer"><i class="fas fa-user"></i> Customer Portal</span>
+            </div>
+
+            <form id="login-form" data-role="customer">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <div class="auth-links">
+                    <label class="form-check">
+                        <input type="checkbox" id="remember-me" checked>
+                        <span>Remember Me</span>
+                    </label>
+                    <a href="#" onclick="showToast('Password recovery link sent to registered email.', 'info'); return false;">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In to Dashboard
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account yet? <a href="register.html">Create Account</a>
+                <div style="margin-top:12px; font-size:0.82rem;">
+                    Staff or Admin? <a href="staff-login.html">Staff Portal</a> &bull; <a href="admin-login.html">Admin Portal</a>
+                </div>
+            </div>
+
+            <!-- Demo Account Quick Fill Helper -->
+            <div class="demo-credentials-box">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><strong>Demo Customer:</strong> customer@smartqueue.com</span>
+                    <button type="button" class="demo-fill-btn" onclick="fillDemo('customer@smartqueue.com', 'customer123')">Auto-Fill</button>
+                </div>
+                <div style="font-size:0.75rem; color:#94a3b8; margin-top:2px;">Password: customer123</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

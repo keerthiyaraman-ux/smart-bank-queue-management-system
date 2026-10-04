@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Branch Queue Status | SmartQueue Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/queue.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body id="live-queue-board-container">
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="customer-dashboard.html" class="sidebar-brand">
+                    <div class="brand-icon"><i class="fas fa-landmark"></i></div>
+                    <span>Smart<span>Queue</span></span>
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-label">Main Navigation</div>
+                <div class="nav-item">
+                    <a href="customer-dashboard.html" class="nav-link">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="book-token.html" class="nav-link">
+                        <i class="fas fa-ticket-alt"></i> Book Token
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="my-token.html" class="nav-link">
+                        <i class="fas fa-id-card-alt"></i> My Token
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="queue-status.html" class="nav-link active">
+                        <i class="fas fa-stream"></i> Queue Status
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="services.html" class="nav-link">
+                        <i class="fas fa-concierge-bell"></i> Services
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="user-avatar">C</div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-display-name">Customer</div>
+                        <div class="user-role" id="user-display-role">Verified Customer</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button id="sidebar-toggle-btn" class="mobile-menu-btn" style="display:inline-block;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="top-bar-title">
+                        <h1>Real-Time Live Queue Board</h1>
+                        <p>Live synchronized queue status across branch counters</p>
+                    </div>
+                </div>
+
+                <div class="top-bar-actions">
+                    <div class="branch-select-badge">
+                        <i class="fas fa-map-marker-alt" style="color:var(--accent);"></i>
+                        <select id="queue-branch-selector">
+                            <option value="1" selected>Chennai Main Branch</option>
+                            <option value="2">Anna Nagar Branch</option>
+                            <option value="3">Tambaram Branch</option>
+                            <option value="4">Coimbatore Branch</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-body">
+                <!-- Live Queue Big Board -->
+                <div class="live-board-header">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span class="live-pulse"></span>
+                            <span style="font-size:0.9rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--cyan);">LIVE QUEUE DISPLAY MONITOR</span>
+                        </div>
+                        <span style="font-size:0.8rem; color:#94a3b8;"><i class="fas fa-sync-alt fa-spin"></i> Auto-syncing every 4s</span>
+                    </div>
+
+                    <div class="live-board-grid">
+                        <!-- 1. Currently Serving -->
+                        <div class="live-metric-box active-serving">
+                            <span>CURRENTLY SERVING</span>
+                            <h2 id="live-serving-token">--</h2>
+                        </div>
+
+                        <!-- 2. Next Token -->
+                        <div class="live-metric-box">
+                            <span>NEXT TOKEN</span>
+                            <h2 id="live-next-token" style="color:#a78bfa;">--</h2>
+                        </div>
+
+                        <!-- 3. Your Token -->
+                        <div class="live-metric-box your-token">
+                            <span>YOUR TOKEN</span>
+                            <h2 id="live-your-token">--</h2>
+                        </div>
+
+                        <!-- 4. People Ahead -->
+                        <div class="live-metric-box">
+                            <span>PEOPLE AHEAD</span>
+                            <h2 id="live-people-ahead" style="color:var(--warning);">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estimated Wait Alert Bar -->
+                <div style="background:#ffffff; border-radius:var(--radius-md); padding:16px 24px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="far fa-clock" style="font-size:1.4rem; color:var(--accent);"></i>
+                        <div>
+                            <strong>Estimated Waiting Time For You:</strong>
+                            <span id="live-estimated-wait" style="color:var(--success); font-weight:800; margin-left:6px; font-size:1.1rem;">0 Mins</span>
+                        </div>
+                    </div>
+                    <span style="font-size:0.82rem; color:var(--text-muted);"><i class="fas fa-info-circle"></i> Based on 5 mins avg per customer</span>
+                </div>
+
+                <!-- Queue Progression Table -->
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3><i class="fas fa-list-ol" style="color:var(--accent); margin-right:8px;"></i> Live Order of Service</h3>
+                        <span style="font-size:0.85rem; color:var(--text-muted);">FIFO (First-In, First-Out) Sequence</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Pos</th>
+                                    <th>Token Number</th>
+                                    <th>Banking Service</th>
+                                    <th>Status</th>
+                                    <th>Remark / Location</th>
+                                </tr>
+                            </thead>
+                            <tbody id="live-queue-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align:center; padding:32px; color:var(--text-muted);">
+                                        <i class="fas fa-spinner fa-spin"></i> Polling live branch queue...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>requireAuth(['customer', 'staff', 'admin']);</script>
+    <script src="js/queue.js"></script>
+</body>
+</html>

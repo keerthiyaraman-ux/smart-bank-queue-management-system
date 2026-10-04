@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Digital Token | SmartQueue Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/queue.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body id="my-token-container">
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="customer-dashboard.html" class="sidebar-brand">
+                    <div class="brand-icon"><i class="fas fa-landmark"></i></div>
+                    <span>Smart<span>Queue</span></span>
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-label">Main Navigation</div>
+                <div class="nav-item">
+                    <a href="customer-dashboard.html" class="nav-link">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="book-token.html" class="nav-link">
+                        <i class="fas fa-ticket-alt"></i> Book Token
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="my-token.html" class="nav-link active">
+                        <i class="fas fa-id-card-alt"></i> My Token
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="queue-status.html" class="nav-link">
+                        <i class="fas fa-stream"></i> Queue Status
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="services.html" class="nav-link">
+                        <i class="fas fa-concierge-bell"></i> Services
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="user-avatar">C</div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-display-name">Customer</div>
+                        <div class="user-role" id="user-display-role">Verified Customer</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button id="sidebar-toggle-btn" class="mobile-menu-btn" style="display:inline-block;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="top-bar-title">
+                        <h1>Digital Queue Token</h1>
+                        <p>Live progress tracking and active counter ticket</p>
+                    </div>
+                </div>
+
+                <div class="top-bar-actions">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="loadMyTokenDetails()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </header>
+
+            <main class="content-body">
+                <!-- Empty state if no token -->
+                <div id="token-empty-state" class="table-card" style="display:none; max-width:540px; margin:40px auto; padding:48px 32px; text-align:center;">
+                    <div style="width:72px; height:72px; border-radius:50%; background:#f1f5f9; color:var(--text-muted); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:2rem;">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <h3 style="font-size:1.3rem; color:var(--primary); margin-bottom:8px;">No Active Token</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:24px;">You currently do not have any active waiting or serving token.</p>
+                    <a href="book-token.html" class="btn btn-primary"><i class="fas fa-plus"></i> Book a Digital Token</a>
+                </div>
+
+                <!-- Digital Token Ticket Card -->
+                <div class="digital-token-container" id="digital-ticket-card">
+                    <div class="ticket-card">
+                        <!-- Ticket Header -->
+                        <div class="ticket-header">
+                            <div class="ticket-bank-name">SmartQueue Bank &bull; Digital Queue System</div>
+                            <div class="ticket-title" id="ticket-service-name">Cash Withdrawal</div>
+                            <div style="font-size:0.85rem; color:#94a3b8; margin-top:4px;" id="ticket-branch-name">Chennai Main Branch</div>
+                        </div>
+
+                        <!-- Ticket Body -->
+                        <div class="ticket-body">
+                            <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">YOUR TOKEN NUMBER</span>
+                            <div class="token-big-badge" id="ticket-token-number">A105</div>
+
+                            <div>
+                                <span class="ticket-status-pill waiting" id="ticket-status-pill">
+                                    <span class="live-pulse"></span> WAITING
+                                </span>
+                            </div>
+
+                            <!-- Visual Progress Bar -->
+                            <div class="queue-progress-bar">
+                                <div class="queue-progress-fill" id="progress-fill-bar" style="width: 0%;"></div>
+                                <div class="progress-step active" id="p-step-1">
+                                    <div class="step-dot"><i class="fas fa-clock"></i></div>
+                                    <span class="step-label">Waiting</span>
+                                </div>
+                                <div class="progress-step" id="p-step-2">
+                                    <div class="step-dot"><i class="fas fa-bell"></i></div>
+                                    <span class="step-label">Almost Your Turn</span>
+                                </div>
+                                <div class="progress-step" id="p-step-3">
+                                    <div class="step-dot"><i class="fas fa-bullhorn"></i></div>
+                                    <span class="step-label">Your Turn</span>
+                                </div>
+                                <div class="progress-step" id="p-step-4">
+                                    <div class="step-dot"><i class="fas fa-check"></i></div>
+                                    <span class="step-label">Completed</span>
+                                </div>
+                            </div>
+
+                            <!-- Ticket Details Grid -->
+                            <div class="ticket-details-grid">
+                                <div class="detail-item">
+                                    <span>CURRENT SERVING</span>
+                                    <strong id="ticket-current-serving" style="font-family:'JetBrains Mono'; font-size:1.2rem; color:var(--accent);">A101</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>PEOPLE AHEAD</span>
+                                    <strong id="ticket-people-ahead" style="color:var(--warning); font-size:1.2rem;">4</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>ESTIMATED WAITING TIME</span>
+                                    <strong id="ticket-estimated-wait" style="color:var(--success); font-size:1.2rem;">20 Minutes</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>APPOINTMENT TIME</span>
+                                    <strong id="ticket-appointment-time">10:30 AM</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>DATE</span>
+                                    <strong id="ticket-date">Today</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <span>TARGET COUNTER</span>
+                                    <strong id="ticket-counter-num">Counter 1</strong>
+                                </div>
+                            </div>
+
+                            <div class="ticket-divider"></div>
+
+                            <!-- Buttons -->
+                            <div class="ticket-footer">
+                                <button type="button" class="btn btn-secondary" onclick="loadMyTokenDetails()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                                <button type="button" id="ticket-cancel-btn" class="btn btn-danger" onclick="cancelMyToken()">
+                                    <i class="fas fa-times-circle"></i> Cancel Token
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="downloadTokenTicket()">
+                                    <i class="fas fa-print"></i> Download Token
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>requireAuth(['customer']);</script>
+    <script src="js/queue.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Staff Portal | SmartQueue Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="index.html" class="auth-logo">
+                    <div class="brand-icon" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);"><i class="fas fa-id-badge"></i></div>
+                    <span>SmartQueue Bank</span>
+                </a>
+                <h2>Branch Staff Access</h2>
+                <p>Manage branch queue counters, call customers, and resolve tokens</p>
+                <span class="auth-role-tag staff"><i class="fas fa-user-tie"></i> Staff Portal</span>
+            </div>
+
+            <form id="login-form" data-role="staff">
+                <div class="form-group">
+                    <label class="form-label" for="login-email">Staff Work Email</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="login-email" class="form-control" placeholder="staff@smartqueue.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="login-password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-btn" style="background:linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);">
+                    <i class="fas fa-sign-in-alt"></i> Access Counter Terminal
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a> &bull;
+                <a href="login.html">Customer Sign In</a>
+            </div>
+
+            <!-- Demo Account Quick Fill Helper -->
+            <div class="demo-credentials-box">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><strong>Demo Staff:</strong> staff@smartqueue.com</span>
+                    <button type="button" class="demo-fill-btn" onclick="fillDemo('staff@smartqueue.com', 'staff123')">Auto-Fill</button>
+                </div>
+                <div style="font-size:0.75rem; color:#94a3b8; margin-top:2px;">Password: staff123</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

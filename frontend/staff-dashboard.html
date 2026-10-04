@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Staff Counter Terminal | SmartQueue Bank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/queue.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body id="staff-dashboard-container">
+
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="staff-dashboard.html" class="sidebar-brand">
+                    <div class="brand-icon" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);"><i class="fas fa-id-badge"></i></div>
+                    <span>Staff<span>Desk</span></span>
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-label">Counter Operations</div>
+                <div class="nav-item">
+                    <a href="staff-dashboard.html" class="nav-link active">
+                        <i class="fas fa-desktop"></i> Dashboard
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#queue-table-section" class="nav-link">
+                        <i class="fas fa-list-ol"></i> Queue
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="queue-status.html" target="_blank" class="nav-link">
+                        <i class="fas fa-tv"></i> Public Display
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" onclick="showToast('Daily teller performance report downloaded.', 'info'); return false;" class="nav-link">
+                        <i class="fas fa-file-invoice"></i> Reports
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-snippet">
+                    <div class="user-avatar" id="user-avatar" style="background:#8b5cf6;">S</div>
+                    <div class="user-info">
+                        <div class="user-name" id="user-display-name">Officer Ramesh</div>
+                        <div class="user-role" id="user-display-role">Teller Staff</div>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <header class="top-bar">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button id="sidebar-toggle-btn" class="mobile-menu-btn" style="display:inline-block;">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="top-bar-title">
+                        <h1>Branch Queue Desk</h1>
+                        <p>Manage customer service flow and call FIFO tokens</p>
+                    </div>
+                </div>
+
+                <div class="top-bar-actions">
+                    <div class="branch-select-badge">
+                        <i class="fas fa-building" style="color:#8b5cf6;"></i>
+                        <select id="staff-branch-selector">
+                            <option value="1" selected>Chennai Main Branch</option>
+                            <option value="2">Anna Nagar Branch</option>
+                            <option value="3">Tambaram Branch</option>
+                            <option value="4">Coimbatore Branch</option>
+                        </select>
+                    </div>
+
+                    <div class="branch-select-badge">
+                        <i class="fas fa-desktop" style="color:var(--accent);"></i>
+                        <select id="staff-counter-selector">
+                            <option value="Counter 1">Counter 1 (General)</option>
+                            <option value="Counter 2" selected>Counter 2 (Cash Desk)</option>
+                            <option value="Counter 3">Counter 3 (Accounts)</option>
+                            <option value="Counter 4">Counter 4 (Loans)</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <main class="content-body">
+                <!-- 4 Dashboard Metric Cards -->
+                <div class="metrics-grid">
+                    <!-- 1. Waiting Customers -->
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Waiting Customers</h4>
+                            <div class="metric-value" id="staff-metric-waiting" style="color:var(--warning);">0</div>
+                            <div class="metric-subtext">Awaiting call in queue</div>
+                        </div>
+                        <div class="metric-icon-wrapper metric-orange">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                    </div>
+
+                    <!-- 2. Currently Serving -->
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Currently Serving</h4>
+                            <div class="metric-value" id="staff-metric-serving" style="color:var(--accent);">0</div>
+                            <div class="metric-subtext">Active at counter</div>
+                        </div>
+                        <div class="metric-icon-wrapper metric-blue">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                    </div>
+
+                    <!-- 3. Completed Today -->
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Completed Today</h4>
+                            <div class="metric-value" id="staff-metric-completed" style="color:var(--success);">0</div>
+                            <div class="metric-subtext">Successfully processed</div>
+                        </div>
+                        <div class="metric-icon-wrapper metric-green">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                    </div>
+
+                    <!-- 4. Cancelled Today -->
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Cancelled Today</h4>
+                            <div class="metric-value" id="staff-metric-cancelled" style="color:var(--danger);">0</div>
+                            <div class="metric-subtext">Customer / no-show drops</div>
+                        </div>
+                        <div class="metric-icon-wrapper metric-red">
+                            <i class="fas fa-user-times"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Customer Serving Section & Action Controls -->
+                <div class="counter-control-card">
+                    <div class="counter-details-grid">
+                        <!-- Token Display -->
+                        <div class="current-token-display">
+                            <span>CURRENTLY SERVING</span>
+                            <h2 id="staff-serving-token">--</h2>
+                            <small id="staff-counter-label" style="color:#cbd5e1; font-weight:700;">Counter 2</small>
+                        </div>
+
+                        <!-- Customer Info -->
+                        <div class="customer-serving-info">
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--cyan); text-transform:uppercase; letter-spacing:1px;">CUSTOMER DETAILS</span>
+                            <h3 id="staff-customer-name">No customer at counter</h3>
+                            <p><i class="fas fa-concierge-bell" style="color:var(--cyan); margin-right:6px;"></i> <span id="staff-service-name">Click "Call Next" to begin</span></p>
+                            <p style="font-size:0.85rem; color:#94a3b8;"><i class="fas fa-clock" style="margin-right:6px;"></i> Average transaction SLA: 5-10 mins</p>
+                        </div>
+
+                        <!-- Staff Action Buttons -->
+                        <div class="staff-action-buttons">
+                            <button type="button" id="btn-staff-call-next" class="btn btn-primary" onclick="staffCallNext()" style="background:#10b981;">
+                                <i class="fas fa-bullhorn"></i> Call Next (FIFO)
+                            </button>
+                            <button type="button" id="btn-staff-complete" class="btn btn-secondary" onclick="staffComplete()" disabled>
+                                <i class="fas fa-check-circle"></i> Complete
+                            </button>
+                            <button type="button" id="btn-staff-skip" class="btn btn-outline" style="border-color:#f59e0b; color:#f59e0b;" onclick="staffSkip()" disabled>
+                                <i class="fas fa-forward"></i> Skip / No Show
+                            </button>
+                            <button type="button" id="btn-staff-recall" class="btn btn-outline" style="border-color:#00c2ff; color:#00c2ff;" onclick="staffRecall()" disabled>
+                                <i class="fas fa-volume-up"></i> Recall Chime
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queue Table Section -->
+                <div class="table-card" id="queue-table-section">
+                    <div class="table-header">
+                        <h3><i class="fas fa-list-ol" style="color:var(--accent); margin-right:8px;"></i> Waiting Customer Queue</h3>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="loadStaffQueueData()">
+                            <i class="fas fa-sync-alt"></i> Refresh Queue
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Customer</th>
+                                    <th>Service</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staff-queue-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align:center; padding:32px; color:var(--text-muted);">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading waiting customer queue...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>requireAuth(['staff', 'admin']);</script>
+    <script src="js/staff.js"></script>
+</body>
+</html>
